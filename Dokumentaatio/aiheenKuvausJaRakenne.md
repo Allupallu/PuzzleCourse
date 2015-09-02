@@ -14,4 +14,4 @@ Voitto- ja häviötilat määritellään tarkemmin myöhemmin vastaantulevien oh
 **Kaikkien käyttäjien toiminnot:**
 - Uuden pelin aloittaminen
 - Vierekkäisten värikkäiden muotojen paikkojen vaihtaminen
--- Vain hyväksyttäville siirroille
+  -Vain hyväksyttäville siirroille
