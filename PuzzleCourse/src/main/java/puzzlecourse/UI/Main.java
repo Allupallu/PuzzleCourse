@@ -1,16 +1,19 @@
 package puzzlecourse.UI;
 
+import puzzlecourse.logic.GameRound;
+
 /**
- * Ohjelman tynkä.
- * Jokaisen palautuksen yhteydessä ohjelma tulee voida ajaa ilman 
- * virheilmoituksia, vaikka se ei tekisi vielä mitään. Täten vainoharhaiset
- * opiskelijat tekevät ohjelman tyngän ensimmäiseen palautukseen. :D
+ * Pääluokka.
  * @author aleksi
  */
 public class Main {
     
     public static void main(String[] args) {
-        System.out.println("You'll never get me alive, coppers!");
+        
+        GameRound round = new GameRound();
+        round.newBoard();
+        TerminalUI.start(round);
+        
     }
     
 }
