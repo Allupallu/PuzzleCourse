@@ -14,3 +14,6 @@
 - 11:20 - 12:20 : Ohjelmointia.
 - 16:00 - 19:10 : Ohjelmointia. Jahtaan toistuvuuksia koodissa ja muokkaan omiksi metodeikseen.
 - 19:20 - 20:40 : Jatkan jahtaamista. Pushaan gittiin ihan siltä varalta, että nukun huomisen läpi tai jotain muuta erikoista.
+
+## Pe 11.9. - 20 min
+- 15:40 - 16:00 : Kattelen, jos jotain parantaisi/selventäisi/muuten vain sörkkisi. Korjasin eilisten koodimuokkausten aiheuttaman bugin ja muutin yhden silmukan ehtoja mahdollisesti selvemmiksi.

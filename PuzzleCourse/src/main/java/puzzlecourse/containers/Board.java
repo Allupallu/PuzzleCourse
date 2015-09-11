@@ -93,14 +93,15 @@ public class Board {
     public List findThreePiecesAt(int y, int x) {
         List<Coordinate> inThrees = new LinkedList();
         for (int i = -2; i < 1; i++) {
-            boolean horizontal = true;
-            for (int k = 0 ; k < 2; k++) {
+            for (boolean horizontal=false, endLoop=false;
+                 endLoop == false;
+                 horizontal = true) {
                 Coordinate c = new Coordinate(y + t1f0(!horizontal)*i,
                                               x + t1f0(horizontal)*i);
                 if (startsLineOfThree(c, horizontal)) {
                     addLineOfThreeToList(inThrees, c , horizontal);
                 }
-                horizontal = false;
+                if (horizontal) endLoop = true;
             }
         }
         return inThrees;
@@ -131,7 +132,7 @@ public class Board {
         for (Coordinate c : coords) {
             destroArray[c.getY()][c.getX()] = true;
         }
-        for (int i = getSize() - 1 ;  i > 0 ; ) {
+        for (int i = getSize() - 1 ;  i >= 0 ; ) {
             boolean rowClear = true;
             for (int j = 0; j < getSize(); j++) {
                 if (destroArray[i][j]) {
