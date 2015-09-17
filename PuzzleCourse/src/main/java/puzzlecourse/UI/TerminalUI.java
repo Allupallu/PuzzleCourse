@@ -1,7 +1,6 @@
 package puzzlecourse.UI;
 
 import java.util.Scanner;
-import puzzlecourse.containers.Board;
 import puzzlecourse.logic.GameRound;
 
 /**
@@ -12,8 +11,8 @@ public class TerminalUI {
     
     private static void printBoard(GameRound round) {
         System.out.println("Lauta:");
-        for (int i = 0; i < round.getBoardHeight(); i++) {
-            for (int j = 0; j < round.getBoardWidth(); j++) {
+        for (int i = 0; i < round.getBoardSize(); i++) {
+            for (int j = 0; j < round.getBoardSize(); j++) {
                 System.out.print(" "+ round.getTypeAt(i, j) +" ");
             } 
             System.out.println("");
@@ -21,8 +20,8 @@ public class TerminalUI {
     }
     
     /**
-     * Käynnistää tekstikäyttöliittymän laudalla.
-     * @param board 
+     * Käynnistää tekstikäyttöliittymän laudalla. 
+     * @param round
      */
     public static void start(GameRound round) {
         
@@ -55,6 +54,15 @@ public class TerminalUI {
             }
             
         }
+    }
+    
+    public static void main(String[] args) {
+        
+        GameRound round = new GameRound();
+        round.newBoard();
+        
+        TerminalUI.start(round);
+        
     }
     
 }

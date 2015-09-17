@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.Timeout;
 
 /**
  *
@@ -18,6 +20,11 @@ public class BoardTest {
     
     public BoardTest() {
     }
+    
+    @Rule
+    public Timeout globalTimeout= new Timeout(20);
+    
+    
     
     @BeforeClass
     public static void setUpClass() {
@@ -32,12 +39,20 @@ public class BoardTest {
     public void setUp() {
         board = new Board();
         board.newBoard();
+        //newBoardForTestsIsFast();
         size = board.getSize();
     }
     
     @After
     public void tearDown() {
     }
+    
+    /*
+    @Test(timeout=10)
+    public void newBoardForTestsIsFast() {
+        board.newBoard();
+    }
+    */
     
     @Test
     public void noNegativeY1Switch() {
@@ -217,4 +232,26 @@ public class BoardTest {
         }
         assertEquals(false, test);
     }
+    
+    /*
+    @Test
+    public void findMove() { // Huono testi. Onnesta kiinni.
+        boolean test = false;
+        
+        for (int i = 0; i < size - 3; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (board.getPiece(i, j).getType() == board.getPiece(i+1, j).getType()
+                 && board.getPiece(i+1, j).getType() == board.getPiece(i+2, j+1).getType()) {
+                    test = true;
+                    i = size;
+                    j = size;
+                }
+            }
+        }
+        assertEquals(true, test);
+    }
+    */  
+    
+    
+    
 }

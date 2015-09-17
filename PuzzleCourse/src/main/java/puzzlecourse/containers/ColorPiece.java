@@ -20,7 +20,7 @@ public class ColorPiece {
     
     public void changeType(int type) {
         if (type == -1) {
-            type = (int) (Math.random() * TYPES)+1;
+            type = (int) (Math.random() * TYPES);
         }
         this.type = type;
     }

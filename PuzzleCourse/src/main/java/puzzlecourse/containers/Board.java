@@ -126,12 +126,21 @@ public class Board {
      * Poistaa koordinaattien napit paikalta, pudottaa ylemmät ja luo 
      * huipulle uudet.
      * @param coords
+     * @return lista uusista tuhottavista
      */
-    public void destroyAt(List<Coordinate> coords) {
+    public List<Coordinate> destroyAt(List<Coordinate> coords) {
         boolean[][] destroArray = new boolean[getSize()][getSize()];
         for (Coordinate c : coords) {
             destroArray[c.getY()][c.getX()] = true;
         }
+        boolean[] changedColumns = new boolean[getSize()];
+        
+        destroyAtLoop(destroArray, changedColumns);
+        
+        return checkColumnsForThrees(changedColumns);
+        
+    }
+    private void destroyAtLoop(boolean[][] destroArray, boolean[] changedColumns) {
         for (int i = getSize() - 1 ;  i >= 0 ; ) {
             boolean rowClear = true;
             for (int j = 0; j < getSize(); j++) {
@@ -140,12 +149,14 @@ public class Board {
                     destroArray[0][j] = false;
                     dropColumnAt(board, i, j);
                     board[0][j] = new ColorPiece();
+                    changedColumns[j] = true;
                     rowClear = false;
                 }
             }
             if (rowClear) i--;
         }
     }
+    
     
     private void dropColumnAt(boolean[][] table, int y, int x) {
         for (int i = y; i > 0; i--) {
@@ -156,6 +167,23 @@ public class Board {
         for (int i = y; i > 0; i--) {
             table[i][x] = table[i-1][x];
         }
+    }
+    private List<Coordinate> checkColumnsForThrees(boolean[] checklist) {
+        List<Coordinate> threes = new LinkedList();
+        System.out.println("Debug.");
+        for (int i = 0; i < getSize(); i++) {
+            if (checklist[i]) {
+                threes.addAll(droppedNewThreesColumn(i));
+            }
+        }
+        return threes;
+    }
+    private List<Coordinate> droppedNewThreesColumn(int x) {
+        List<Coordinate> newThrees = new LinkedList();
+        for (int i = 0; i < getSize(); i ++) {
+            newThrees.addAll(findThreePiecesAt(i,x));
+        }
+        return newThrees;
     }
     
     
@@ -172,9 +200,6 @@ public class Board {
     }
     
     
-    // Puuttuu ns xxox mahdollisuus, katsoo vain
-    // xxo
-    // abx
     private boolean isLinePossibleAt(Coordinate c, boolean horizontal) {
         if (!isWithinBoundsEndGap(c,horizontal)) {
             return false;
@@ -189,11 +214,17 @@ public class Board {
                              type                        )) {
                 inRow++;
             } else {
-                nearRow = (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i,
-                                        c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i,
+                nearRow = (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i, //"  x"
+                                        c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i, // xxo
                                         type                                         )
-                        || checkForType(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i,
-                                        c.getX()+t1f0(!horizontal)+t1f0(horizontal)*i,
+                        || checkForType(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i, //"xxo"
+                                        c.getX()+t1f0(!horizontal)+t1f0(horizontal)*i, //   x
+                                        type                                         )
+                        || checkForType(c.getY()-t1f0(!horizontal), // "xoxx"
+                                        c.getX()-t1f0(horizontal),
+                                        type                                         )
+                        || checkForType(c.getY()+t1f0(!horizontal)*3, // "xxox"
+                                        c.getX()+t1f0(horizontal)*3,
                                         type                                         ));
             }
         }
