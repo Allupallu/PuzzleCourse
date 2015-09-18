@@ -29,3 +29,6 @@
 ## To 17.9. - 5 tuntia 10 minuuttia
 - 13:20 - 17:00 : Ohjelmointia. Mikään ei ole edennyt, koska ihmeellinen virhe, johon en meinaa löytää ratkaisua. Jaahas, Mavenissa toimii erilailla tiedostohaut. Menipä siihenkin pari tuntia minkään oikeastaan etenemättä.
 - 17:30 - 19:00 : Tarvitsi hiukan rauhoittua resurssienhaulle hermostumisesta. Takaisin ohjelmoimaan. Alkaapi väsyttää. Laitan sotkuisen graafisen käyttöliittymän nettiin taas siltä varalta, että huomenna vahingossa nukun koko päivän tai jotain.
+
+## Pe 18.9. - 1 tunti
+- 16:00 - 17:00 : Testien parannusta. Ehh, 79% & 76% good enough kun väsyttää. Nyt sitten luokkakaavio uusiksi. Kuulostaa ukkoselta, nyt pitää laittaa nettiin kaikki.
