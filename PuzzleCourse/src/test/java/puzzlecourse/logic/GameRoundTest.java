@@ -37,8 +37,57 @@ public class GameRoundTest {
     @After
     public void tearDown() {
     }
-
     
+    @Test
+    public void newBoardDoesSomething() {
+        boolean test = false;
+        
+        try {
+            round.getTypeAt(0, 0);
+            test = true;
+        } catch(Exception e) {
+            
+        }
+        
+        assertEquals(true, test);
+    }
+    
+    @Test
+    public void twoPlayers() {
+        assertEquals(false, round.getPlayer(1) == null);
+    }
+    
+    @Test
+    public void boardSizeNotSillySmall() {
+        assertEquals(true, size > 1);
+    }
+    
+    @Test
+    public void typesAreNotJustZeroes() {
+        assertEquals(true, round.getTypeAt(0, 0) != 0
+                         ||round.getTypeAt(0, 1) != 0
+                         ||round.getTypeAt(0, 2) != 0);
+    }
+    @Test
+    public void typesAreNotJustOnes() {
+        assertEquals(true, round.getTypeAt(0, 0) != 1
+                         ||round.getTypeAt(0, 1) != 1
+                         ||round.getTypeAt(0, 2) != 1);
+    }
+    
+    @Test
+    public void canCancelMove() {
+        round.makeMove(0, 0);
+        assertEquals(true, round.makeMove(0, 0));
+    }
+    @Test
+    public void noJumpingMoves() {
+        round.makeMove(0, 0);
+        assertEquals(false, round.makeMove(0, 2));
+    }
+    
+
+    /*
     @Test
     public void findAndTestMove() { // Hirviötesti, koska sattumanvaraisuus ja laiska
         boolean test = false;
@@ -102,6 +151,7 @@ public class GameRoundTest {
         }
         assertEquals(true, test);
     }
+    */
     private boolean sameType3Coords(int a, int b, int c, int d, int e, int f) {
         int type1 = round.getTypeAt(a, b);
         int type2 = round.getTypeAt(c, d);

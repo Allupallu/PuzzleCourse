@@ -2,11 +2,11 @@ package puzzlecourse.containers;
 
 import java.util.List;
 import java.util.LinkedList;
+import puzzlecourse.UI.BoardDrawCoordinates;
 
 /**
  * Pelilauta, jolla pelin "nappulat" sijaitsevat.
- * Ylläpitää taulukkoa pelin ColorPieceistä
- * oikeellisuutta.
+ * Ylläpitää taulukkoa pelin ColorPieceistä.
  * @author aleksi
  */
 public class Board {
@@ -58,7 +58,6 @@ public class Board {
             }
             if (newBoardIsCool && !checkForPossibleMoves()) {
                 newBoard(); //uus on hiano, mutta ei mahdollisia liikkeitä
-                System.out.println("Lauta oli huono ja meni vaihtoon.");
             }
         }
     }
@@ -149,12 +148,14 @@ public class Board {
                     destroArray[0][j] = false;
                     dropColumnAt(board, i, j);
                     board[0][j] = new ColorPiece();
+                    BoardDrawCoordinates.addFall(0, j, getPiece(0,j).getType());
                     changedColumns[j] = true;
                     rowClear = false;
                 }
             }
             if (rowClear) i--;
         }
+        BoardDrawCoordinates.addFallingGroup();
     }
     
     
@@ -166,11 +167,11 @@ public class Board {
     private void dropColumnAt(Object[][] table, int y, int x) {
         for (int i = y; i > 0; i--) {
             table[i][x] = table[i-1][x];
+            BoardDrawCoordinates.addFall(i, x, getPiece(i,x).getType());
         }
     }
     private List<Coordinate> checkColumnsForThrees(boolean[] checklist) {
         List<Coordinate> threes = new LinkedList();
-        System.out.println("Debug.");
         for (int i = 0; i < getSize(); i++) {
             if (checklist[i]) {
                 threes.addAll(droppedNewThreesColumn(i));
@@ -214,7 +215,14 @@ public class Board {
                              type                        )) {
                 inRow++;
             } else {
-                nearRow = (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i, //"  x"
+                nearRow = moveTypes(c, horizontal, type, i);
+            }
+        }
+        return (inRow == 2 && nearRow);
+    }
+    
+    private boolean moveTypes(Coordinate c, boolean horizontal, int type, int i) {
+        return (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i, //"  x"
                                         c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i, // xxo
                                         type                                         )
                         || checkForType(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i, //"xxo"
@@ -226,10 +234,8 @@ public class Board {
                         || checkForType(c.getY()+t1f0(!horizontal)*3, // "xxox"
                                         c.getX()+t1f0(horizontal)*3,
                                         type                                         ));
-            }
-        }
-        return (inRow == 2 && nearRow);
     }
+    
     
     private boolean isWithinBounds(Coordinate c) {
         return checkSize(c.getY()) && checkSize(c.getX());

@@ -9,7 +9,7 @@ import puzzlecourse.logic.GameRound;
  */
 public class TerminalUI {
     
-    private static void printBoard(GameRound round) {
+    public static void printBoard(GameRound round) {
         System.out.println("Lauta:");
         for (int i = 0; i < round.getBoardSize(); i++) {
             for (int j = 0; j < round.getBoardSize(); j++) {

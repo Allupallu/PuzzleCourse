@@ -1,11 +1,11 @@
-package puzzlecourse.logic;
+ package puzzlecourse.logic;
 
 
 import java.io.InputStream;
 import javafx.scene.image.Image;
 
 /**
- *
+ * Hoitaa kuvatiedostojen lataamisen.
  * @author aleksi
  */
 public class ImageLoader {
@@ -24,7 +24,7 @@ public class ImageLoader {
     private static Image[] images;
 
     /**
-     *
+     * Lataa laudan palasten kuvat.
      * @return Onnistuiko lataaminen
      */
     public static boolean loadImages() {
@@ -38,15 +38,9 @@ public class ImageLoader {
         for (int i = 0; i < NUMBER_OF_IMAGES; i++) {
 
             try {
-               //System.out.println(ImageLoader.class.getResource("puzzlecourse/images/blue.png").toExternalForm());
-        
                 InputStream in = ImageLoader.class.getResourceAsStream( IMAGE_PATH + IMAGE_NAMES[i]);
                 images[i] = new Image(in); 
                 
-               //System.out.println(ImageLoader.class.get);
-               //images[i] = new Image(ImageLoader.class.getResource(IMAGE_PATH + IMAGE_NAMES[i]).toExternalForm()); 
-               //System.out.println(ImageLoader.class.getResource("blue.png").getPath());
-               //images[i] = new Image( IMAGE_PATH + IMAGE_NAMES[i] );
             } catch (Exception e) {
                 System.out.println("Ongelmia kuvan kanssa!" + i);
                 loaded = false;
@@ -55,13 +49,32 @@ public class ImageLoader {
 
         return loaded;
     }
+    
+    /**
+     * Lataa tietyn kuvan.
+     * @param imageID kuvatiedoston nimi sans .png
+     * @return palauttaa kuvan
+     */
+    public static Image loadImage(String imageID) {
+        try {
+                InputStream in = ImageLoader.class.getResourceAsStream( IMAGE_PATH + imageID + ".png");
+                return new Image(in); 
+               } catch (Exception e) {
+                System.out.println("Ongelmia kuvan kanssa! " + imageID);
+                return null;
+            }
+    }
 
-    public static Image getImage(int a) {
-        if (!loaded || a < 0 || !(a < images.length)) {
-            System.out.println("Blammo.");
+    /**
+     * Hakee tietyn tyyppisen palan kuvan
+     * @param type tyyppi
+     * @return palan kuva
+     */
+    public static Image getImage(int type) {
+        if (!loaded || type < 0 || !(type < images.length)) {
             return null;
         }
-        return images[a];
+        return images[type];
     }
     
     

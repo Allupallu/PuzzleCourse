@@ -32,3 +32,24 @@
 
 ## Pe 18.9. - 1 tunti
 - 16:00 - 17:00 : Testien parannusta. Ehh, 79% & 76% good enough kun väsyttää. Nyt sitten luokkakaavio uusiksi. Kuulostaa ukkoselta, nyt pitää laittaa nettiin kaikki.
+
+## Su 20.9. - 5 tuntia 20 min
+- 12:10 - 13:40 : Jos vaikka animaatioita ohjelmoisi tähän väliin. Tajusin lähestymistapani johtavan ihmeellisiin bugeihin, joten päätin vähän pohtia asiaa ennen jatkoa.
+- 13:50 - 14:40 : Saatoin keksiä ratkaisun, pitää testata.
+- 14:50 - 17:50 : Palattu syömästä. Tänään ohjelmoin paljon graafisia bugeja. Ehkä joku päivä ne poistan.
+- 19:00 - 19:50 : Päätin korjata sen bugin.
+- 20:20 - 20:35 : Addiktio on pahasta. Nyt on graafisessa "lukko" animaatioiden aikana, ettei villitkään käyttäjät voi tehdä liikkeitä sälän liikkuessa.
+
+## Ma 21.9. - 50 minuuttia
+- 14:00 - 14:30 : Teenpä ohjelman jotenkuten skaalautuvaksi. Testattu resoluutioilla 1024*768 ja 1920x1080: toimi hyvin molemmilla. Liikeanimaatioita en ainakaan vielä skaalannut, joten pienemmillä hiukan nopeampi.
+- 17:55 - 18:15 : Korjaanpa bugin... ja sitten lisäyksiä.
+
+## Ti 22.9. - 1 tunti 35 min
+- 14:05 - 15:40 : Graafisia kokeiluja.
+
+## To 24.9. - 2 tuntia
+- 15:10 - 16:20 : JavaDoc-sälää ja sen Clean code -tarkistusta. Sillai väsynyt, ettei uskalla tehdä isoja muutoksia koodiin. Pari kiireessä väsättyä rumaa luokkaa, mutta tosiaan liian väsynyt, joten ehkä muistan/jaksan vielä huomenna.
+- 16:35 - 17:25 : Viikon huithapelit ohjelmoinnit veivät testikattavuuden, joten taidanpa sittenkin kirjoittaa kasan testejä. Nyt joutuu lopettamaan, alko päänsärky.
+
+## Pe 25.9. - 1 tunti 55 min
+- 13:15 - 15:10 : Testit kuntoon ja hommat ajantasalle.
