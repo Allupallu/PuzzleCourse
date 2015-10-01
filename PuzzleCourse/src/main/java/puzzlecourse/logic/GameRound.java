@@ -3,8 +3,12 @@ package puzzlecourse.logic;
 import java.util.LinkedList;
 import java.util.List;
 import puzzlecourse.UI.BoardDrawCoordinates;
+import puzzlecourse.UI.DialogLayer;
 import puzzlecourse.containers.Board;
 import puzzlecourse.containers.Coordinate;
+import puzzlecourse.containers.Dialog;
+import puzzlecourse.containers.Move;
+import puzzlecourse.containers.Opponent;
 import puzzlecourse.containers.Player;
 
 /**
@@ -16,12 +20,13 @@ public class GameRound {
     private final Board board;
     private final List<Player> players;
     private int currentPlayer;
+    private boolean opponentIntroduced;
     
     public GameRound() {
         board = new Board();
         players = new LinkedList<>();
         players.add(new Player(true, "The Student", "player"));
-        players.add(new Player(false, "The Opponent", "opponent"));
+        players.add(new Opponent(false, "The Opponent", "opponent", board));
     }
     
     /**
@@ -29,6 +34,23 @@ public class GameRound {
      */
     public void newBoard() {
         board.newBoard();
+        newBoardDialog();
+        BoardDrawCoordinates.addNewBoardFall(board);
+    }
+    private void newBoardDialog() {
+        if (opponentIntroduced) {   
+            List<Dialog> newBoardDialog = new LinkedList<>();
+            newBoardDialog.add(getPlayer(1).getDialogOption(0));
+            DialogLayer.addDialog(newBoardDialog);
+        }
+    }
+    
+    /**
+     * Esittelee vastustajan.
+     */
+    public void introduceOpponent() {
+        opponentIntroduced = true;
+        newBoardDialog();
     }
     
     public int getBoardSize() {
@@ -39,8 +61,20 @@ public class GameRound {
         return players.get(i);
     }
     
+    public boolean isHumanTurn() {
+        return players.get(currentPlayer).isHuman();
+    }
+    
     public int getTypeAt(int y, int x) {
         return board.getPiece(y, x).getType();
+    }
+    
+    /**
+     * Etsii ja palauttaa listan kaikista kelpaavista liikkeistä.
+     * @return lista liikkeistä
+     */
+    public List<Move> findMoves() {
+        return board.findMoves(false);
     }
     
     /**
@@ -51,23 +85,29 @@ public class GameRound {
      * @return 
      */
     public boolean makeMove(int y, int x) {
-        boolean move = players.get(currentPlayer).makeMove(this,y,x);
+        boolean move = players.get(currentPlayer).makeMove(y,x);
         if (move) {
-            //nextPlayer();  <- Tämä pitää korjata!
+            if (switchPieces(players.get(currentPlayer).getCurrentMove())) {
+                nextPlayer();
+                System.out.println("Hyvä vaihto.");
+            } else {
+                if (players.get(currentPlayer).isHuman()) {
+                   players.get(currentPlayer).getCurrentMove().reverseBadCoord();
+                }
+                //System.out.println("Huono vaihto.");
+            }
         }
         return move;
     }
     
     
-    /*
+    
     private void nextPlayer() {
-        if (currentPlayer < players.size() - 1) {
-            currentPlayer++;
-        } else {
-            currentPlayer = 0;
-        }
+        currentPlayer = (currentPlayer+1) % players.size();
+        System.out.println("Current player: "+currentPlayer);
+        
     }
-    */
+    
     
     /**
      * Yrittää vaihtaa kahden laudan palan paikat ja onnistuneessa
@@ -94,7 +134,26 @@ public class GameRound {
         while (!list.isEmpty()) {
             list = destroy(list);
         }
+        checkBoardAfterSwitch();
         return true;
+    }
+
+    /**
+     * switchPieces-metodin Move-parametrinen versio.
+     * @see puzzlecourse.logic.GameRound#switchPieces(int, int, int, int) 
+     * @param move yritettävä vaihto
+     * @return onnistuiko vaihto
+     */
+    public boolean switchPieces(Move move) {
+        return switchPieces(move.getY(),move.getX(),
+                            move.getY2(),move.getX2());
+    }
+    
+    
+    private void checkBoardAfterSwitch() {
+        if (board.findMoves(true).isEmpty()) {
+            newBoard();
+        }
     }
     
     private List<Coordinate> threesAt(int y, int x) {

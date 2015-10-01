@@ -18,7 +18,7 @@ public class MouseControl {
             public void handle(MouseEvent t) {
                 if (round.makeMove(y,x) ) {
                     G_Updater.setMoveActive(true);
-                    System.out.println("Clicked at " + y + ", " + x); 
+                    //System.out.println("Clicked at " + y + ", " + x); 
                 }
                 
                  t.consume();

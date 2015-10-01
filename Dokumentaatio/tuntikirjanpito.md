@@ -51,5 +51,21 @@
 - 15:10 - 16:20 : JavaDoc-sälää ja sen Clean code -tarkistusta. Sillai väsynyt, ettei uskalla tehdä isoja muutoksia koodiin. Pari kiireessä väsättyä rumaa luokkaa, mutta tosiaan liian väsynyt, joten ehkä muistan/jaksan vielä huomenna.
 - 16:35 - 17:25 : Viikon huithapelit ohjelmoinnit veivät testikattavuuden, joten taidanpa sittenkin kirjoittaa kasan testejä. Nyt joutuu lopettamaan, alko päänsärky.
 
-## Pe 25.9. - 1 tunti 55 min
+## Pe 25.9. - 3 tuntia 50 min
 - 13:15 - 15:10 : Testit kuntoon ja hommat ajantasalle.
+- 20:35 - 22:30 : Päätin tylsyyttäni tehdä nyt joitain puuttuvia ominaisuuksia Deadline 5:een.
+
+## Ma 28.9. - 4 tuntia 5 min
+- 14:30 - 16:00: Laudan hakumetodien muokkaamista. Odotusten mukaisesti rikoin kaiken :D
+- 16:00 - 16:20 : Korjasin luomani sotkut.
+- 19:55 - 22:10 : Tekoälyvastustajan ohjelmointia. Sitten graafisten muokkausta.
+
+## Ti 29.9. - 10 min
+- 10:40 - 10:50 : Yhtäkkiä muuta tehdessä tajusin, miksi yksi juttu ei toiminut kuten odotin. Korjasin.
+
+## Ke 30.9. - 1 tunti 20 min
+- 14:45 - 16:05 : Sekvenssikaavioiden kertausta ja tekemistä.
+
+## To 1.10 - 4 tuntia 30 min
+- 14:15 - 16:35 : Testikattavuutta muokatuilla metodeilla.
+- 18:00 - 20:10 : Huomiseksi luvattu myrskyä, pitää laittaa kuntoon ja laittaa nettiin siltä varalta, että täältä korvesta menee sähkö ja/tai netti.

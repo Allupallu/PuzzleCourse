@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import puzzlecourse.containers.Waypoint;
 import puzzlecourse.logic.GameRound;
 import puzzlecourse.logic.ImageLoader;
@@ -18,10 +19,11 @@ import puzzlecourse.logic.ImageLoader;
 public class G_Updater {
     
     private static Group boardGroup;
-    private static Canvas lockCanvas;
+    private static Rectangle lockCanvas;
     private static ImageView[][] images;
     private static GameRound round;
     
+    private static boolean dialogActive;
     private static boolean moveActive;
     
     
@@ -31,7 +33,7 @@ public class G_Updater {
      * @param gameround piirrettävä pelierä
      * @param lockCanvaspara lukitsemiseen käytettävä lakana
      */
-    public static void setup(Group group, GameRound gameround, Canvas lockCanvaspara) {
+    public static void setup(Group group, GameRound gameround, Rectangle lockCanvaspara) {
         boardGroup = group;
         round = gameround;
         lockCanvas = lockCanvaspara;
@@ -72,9 +74,16 @@ public class G_Updater {
         EventHandler<ActionEvent> update = new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent t) {
-              if (moveActive) {
+              if (DialogLayer.timedUpdate()) {
+                  
+              } else   
+              if ( BoardDrawCoordinates.hasWaypoints() ) {//moveActive) {
                   lockCanvas.toFront();
                   moveActive = BoardDrawCoordinates.updateDrawCoords();
+              } else 
+              if (!round.isHumanTurn()) {
+                  lockCanvas.toFront();
+                  round.makeMove(0, 0);
               } else {
                   lockCanvas.toBack();
               }

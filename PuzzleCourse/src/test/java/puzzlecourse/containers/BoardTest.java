@@ -1,5 +1,6 @@
 package puzzlecourse.containers;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,12 +48,6 @@ public class BoardTest {
     public void tearDown() {
     }
     
-    /*
-    @Test(timeout=10)
-    public void newBoardForTestsIsFast() {
-        board.newBoard();
-    }
-    */
     
     @Test
     public void noNegativeY1Switch() {
@@ -233,25 +228,49 @@ public class BoardTest {
         assertEquals(false, test);
     }
     
-    /*
     @Test
-    public void findMove() { // Huono testi. Onnesta kiinni.
-        boolean test = false;
-        
-        for (int i = 0; i < size - 3; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                if (board.getPiece(i, j).getType() == board.getPiece(i+1, j).getType()
-                 && board.getPiece(i+1, j).getType() == board.getPiece(i+2, j+1).getType()) {
-                    test = true;
-                    i = size;
-                    j = size;
-                }
+    public void findMoveTrueSizeSmall() {
+        assertEquals(true, board.findMoves(true).size() < 5);
+    }
+    
+    @Test
+    public void moveListNotEmpty() {
+        assertEquals(false, board.findMoves(false).isEmpty());
+    }
+    
+    
+    @Test // Tosi huonolla mäihällä kestää liian pitkään.
+    public void findMoveWithValueNotZero() {
+        int value = 0;
+        while (value == 0) {
+            List<Move> list = board.findMoves(false);
+            for (Move m : list) {
+                value = Math.max(m.getValue(), value);
+            }
+            if (value == 0) {
+                board.newBoard();
             }
         }
-        assertEquals(true, test);
+        assertEquals(true, value > 0);
     }
-    */  
     
+    @Test
+    public void noThreesOnFoundMove() {
+        Move move = board.findMoves(true).get(0);
+        assertEquals(true, board.findThreePiecesAt(move.getY(), move.getX()).isEmpty() &&
+                            board.findThreePiecesAt(move.getY2(), move.getX2()).isEmpty());
+        
+    }
+    
+    @Test
+    public void foundProperMove() {
+        Move move = board.findMoves(true).get(0);
+        board.switchPieces(move.getY(), move.getX(),
+                           move.getY2(), move.getX2());
+        assertEquals(false, board.findThreePiecesAt(move.getY(), move.getX()).isEmpty() &&
+                            board.findThreePiecesAt(move.getY2(), move.getX2()).isEmpty());
+        
+    }
     
     
 }

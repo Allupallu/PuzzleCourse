@@ -56,7 +56,7 @@ public class Board {
                     }
                 }
             }
-            if (newBoardIsCool && !checkForPossibleMoves()) {
+            if (newBoardIsCool && findMoves(true).isEmpty()) {
                 newBoard(); //uus on hiano, mutta ei mahdollisia liikkeitä
             }
         }
@@ -188,53 +188,128 @@ public class Board {
     }
     
     
-    private boolean checkForPossibleMoves() {
+    /**
+     * Etsii ja palauttaa listan mahdollisista liikkeistä.
+     * Boolean parametrilla voidaan saada tarkistamaan, että on olemassa
+     * mahdollinen liike.
+     * @param stopAfterFirst riittääkö löytää yksi
+     * @return lista löydetyistä liikkeistä
+     */
+    public List<Move> findMoves(boolean stopAfterFirst) {
+        LinkedList<Move> moves = new LinkedList<>();
+        
         for (int i = 0; i < getSize(); i++) {
                 for (int j= 0; j < getSize(); j++) {
-                    if (isLinePossibleAt(new Coordinate(i,j),false) ||
-                        isLinePossibleAt(new Coordinate(i,j),true)) {
-                        return true;
+                    if (addMovesToList(moves, new Coordinate(i,j)) &&
+                        stopAfterFirst) {
+                        return moves;
                     }
                 }
             }
+        return moves;
+    }
+    
+    private boolean addMovesToList(List<Move> list, Coordinate c) {
+        boolean added = false;
+        
+        for (int lineType = 0; lineType < 4; lineType++) {
+            if (addMoveToList(list, lineType, c, true )) added = true;
+            if (addMoveToList(list, lineType, c, false)) added = true;
+        }
+        
+        return added;
+    }
+    private boolean addMoveToList(List<Move> list, int lineType, Coordinate c, boolean horizontal) {
+        Move move = isLinePossibleAt(lineType, c, horizontal);
+        if (move != null) {
+            if (list.contains(move)) {
+                list.get(list.indexOf(move)).increaseValue();
+            } else {
+                list.add(move);
+            }
+            return true;
+        }
         return false;
     }
     
     
-    private boolean isLinePossibleAt(Coordinate c, boolean horizontal) {
+    
+    
+    
+    private Move isLinePossibleAt(int lineType, Coordinate c, boolean horizontal) {
         if (!isWithinBoundsEndGap(c,horizontal)) {
-            return false;
+            return null;
         }
         
         int type = board[c.getY()][c.getX()].getType();
         int inRow = 0;
-        boolean nearRow = false;
+        Coordinate rowCoord = null;
+        Coordinate nearRow = null;
         for (int i= 0; i < 3; i++) {
             if (checkForType(c.getY()+t1f0(!horizontal)*i,
                              c.getX()+t1f0(horizontal)*i ,
                              type                        )) {
                 inRow++;
             } else {
-                nearRow = moveTypes(c, horizontal, type, i);
+                rowCoord = new Coordinate(c.getY()+t1f0(!horizontal)*i,
+                                          c.getX()+t1f0(horizontal)*i);
+                nearRow = moveTypes(lineType, c, horizontal, type, i);
             }
         }
-        return (inRow == 2 && nearRow);
+        Move move = null;
+        if ((inRow == 2 && nearRow != null)) {
+            move = new Move(rowCoord.getY(), rowCoord.getX(), nearRow.getY(), nearRow.getX());
+        }
+        return move;
     }
     
-    private boolean moveTypes(Coordinate c, boolean horizontal, int type, int i) {
-        return (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i, //"  x"
-                                        c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i, // xxo
-                                        type                                         )
-                        || checkForType(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i, //"xxo"
-                                        c.getX()+t1f0(!horizontal)+t1f0(horizontal)*i, //   x
-                                        type                                         )
-                        || checkForType(c.getY()-t1f0(!horizontal), // "xoxx"
-                                        c.getX()-t1f0(horizontal),
-                                        type                                         )
-                        || checkForType(c.getY()+t1f0(!horizontal)*3, // "xxox"
-                                        c.getX()+t1f0(horizontal)*3,
-                                        type                                         ));
+    
+    // Käy läpi mahdolliset liiketyypit ja palauttaa ensimmäisen sopivan liikkeen koordinaatit, jos moiset löytyy.
+    private Coordinate moveTypes(int moveType, Coordinate c, boolean horizontal, int type, int i) {
+        switch(moveType) {
+            case 0: return moveTypeHigherLevel(c, horizontal, type, i);
+            case 1: return moveTypeLowerLevel(c, horizontal, type, i);
+            case 2: return moveTypeGapFirst(c, horizontal, type, i);
+            case 3: return moveTypeGapLast(c, horizontal, type, i);
+        }
+        
+        return null;
     }
+    private Coordinate moveTypeHigherLevel(Coordinate c, boolean horizontal, int type, int i) {
+        if (checkForType(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i, //"  x"
+                         c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i, // xxo
+                         type                                         )) {
+            return new Coordinate(c.getY()-t1f0(horizontal)+t1f0(!horizontal)*i,
+                                  c.getX()-t1f0(!horizontal)+t1f0(horizontal)*i);
+        } else return null;
+    }
+    private Coordinate moveTypeLowerLevel(Coordinate c, boolean horizontal, int type, int i) {
+        if (checkForType(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i, //"xxo"
+                                c.getX()+t1f0(!horizontal)+t1f0(horizontal)*i, //   x
+                                type                                         )) {
+            return new Coordinate(c.getY()+t1f0(horizontal)+t1f0(!horizontal)*i,
+                                  c.getX()+t1f0(!horizontal)+t1f0(horizontal)*i);
+        } else return null;
+    }
+    private Coordinate moveTypeGapFirst(Coordinate c, boolean horizontal, int type, int i) {
+        if (i == 0 && // tarkista vain ekalle kolmesta
+            checkForType(c.getY()-t1f0(!horizontal), // "xoxx"
+                                c.getX()-t1f0(horizontal),
+                                type                      )) {
+            return new Coordinate(c.getY()-t1f0(!horizontal),
+                                  c.getX()-t1f0(horizontal));
+        } else return null;
+    }
+    private Coordinate moveTypeGapLast(Coordinate c, boolean horizontal, int type, int i) {
+        if (i == 2 && // tarkista vain vikalle kolmesta
+            checkForType(c.getY()+t1f0(!horizontal)*3, // "xxox"
+                                c.getX()+t1f0(horizontal)*3,
+                                type                      )) {
+            return new Coordinate(c.getY()+t1f0(!horizontal)*3,
+                                  c.getX()+t1f0(horizontal)*3);
+        } else return null;
+    }
+    
     
     
     private boolean isWithinBounds(Coordinate c) {

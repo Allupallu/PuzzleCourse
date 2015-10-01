@@ -3,6 +3,7 @@ package puzzlecourse.UI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import puzzlecourse.containers.Board;
 import puzzlecourse.containers.Coordinate;
 import puzzlecourse.containers.Waypoint;
 
@@ -118,6 +119,24 @@ public class BoardDrawCoordinates {
                 oldWaypoint.addBoardFall();
             }
         
+    }
+    
+    /**
+     * Lisää uudelle laudalle putoamisanimaation.
+     * @param board pelilauta, jolle animaatio lisätään
+     */
+    public static void addNewBoardFall(Board board) {
+        int boardSize = board.getSize();
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                for (int k = 0; k < boardSize; k++) {
+                    int type = board.getPiece(i, j).getType();
+                    addFall(i,j,type);
+                }
+            }
+        }
+        addFallingGroup();
+        G_Updater.setMoveActive(true);
     }
     
     /**

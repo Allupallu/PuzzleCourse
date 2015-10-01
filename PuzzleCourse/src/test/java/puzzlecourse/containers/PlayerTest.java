@@ -61,19 +61,19 @@ public class PlayerTest {
     @Test
     public void moveNotNull1() {
         Player player = new Player(true, "Seppo", "player");
-        player.makeMove(new GameRound(), 0, 0);
+        player.makeMove( 0, 0);
         assertEquals(false, player.getCurrentMoveY() == -1);
     }
     @Test
     public void moveNotNull2() {
         Player player = new Player(true, "Seppo", "player");
-        player.makeMove(new GameRound(), 0, 0);
+        player.makeMove(0, 0);
         assertEquals(false, player.getCurrentMoveX() == -1);
     }
     @Test
     public void moveRightX() {
         Player player = new Player(true, "Seppo", "player");
-        player.makeMove(new GameRound(), 5, 6);
+        player.makeMove( 5, 6);
         int x;
         try {
             x = player.getCurrentMoveX();
@@ -86,7 +86,7 @@ public class PlayerTest {
     @Test
     public void moveRightY() {
         Player player = new Player(true, "Seppo", "player");
-        player.makeMove(new GameRound(), 5, 6);
+        player.makeMove( 5, 6);
         int x;
         try {
             x = player.getCurrentMoveY();
@@ -100,10 +100,10 @@ public class PlayerTest {
     public void cancelMoveResultsInNullMove() {
         Player player = new Player(true, "Seppo", "player");
         GameRound round = new GameRound();
-        player.makeMove(round, 5, 6);
-        player.makeMove(round, 5, 6);
+        player.makeMove( 5, 6);
+        player.makeMove( 5, 6);
         
-        assertEquals(player.getCurrentMoveX(), -1);
+        assertEquals(player.getCurrentMove(), null);
     }
     
 }

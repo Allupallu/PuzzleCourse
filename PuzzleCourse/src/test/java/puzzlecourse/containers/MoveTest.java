@@ -6,15 +6,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import puzzlecourse.logic.GameRound;
 
 /**
  *
  * @author aleksi
  */
 public class MoveTest {
-    
-    private GameRound round;
     
     public MoveTest() {
     }
@@ -29,7 +26,6 @@ public class MoveTest {
     
     @Before
     public void setUp() {
-        round = new GameRound();
         
     }
     
@@ -39,22 +35,22 @@ public class MoveTest {
 
     @Test
     public void sameCoordsReturnTrue() {
-        Move move = new Move(round, 1, 1);
+        Move move = new Move( 1, 1);
         assertEquals(true, move.addCoord(1, 1));
     }
     @Test
     public void noDiagonalMove() {
-        Move move = new Move(round, 1, 1);
+        Move move = new Move( 1, 1);
         assertEquals(false, move.addCoord(2, 2));
     }
     @Test
     public void getRightX() {
-        Move move = new Move(round, 1,2);
+        Move move = new Move( 1,2);
         assertEquals(2, move.getX());
     }
     @Test
     public void getRightY() {
-        Move move = new Move(round, 2,1);
+        Move move = new Move( 2,1);
         assertEquals(2, move.getY());
     }
     

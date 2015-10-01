@@ -7,7 +7,7 @@ Puzzle Quest -pelin inspiroima peli. Pelialustana on värin perusteella luokitel
 
 Käyttäjän työkaluna on vaihtaa kahden särmänaapuriesineen paikat keskenään. Ainoastaan onnistuneeseen jononmuodostukseen johtavat siirrot hyväksytään. Jos laudalla ei ole hyväksyttäviä siirtoja, lauta tyhjennetään ja täytetään uudestaan.
 
-Voitto- ja häviötilat määritellään tarkemmin myöhemmin vastaantulevien ohjelmointihaasteiden selvitessä. Alustavasti häviö/voittotilaan päädytään, kun "Liikkeitä jäljellä"-laskuri laskee nollaan, jolloin pelin tavoitteena on pistemäärät.
+Voitto- ja häviötilat määritellään tarkemmin myöhemmin, kunhan ne ensi viikolla päätän.
 
 **Käyttäjät:** Virikettä kaipaavat
 
