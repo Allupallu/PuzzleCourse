@@ -66,6 +66,24 @@
 ## Ke 30.9. - 1 tunti 20 min
 - 14:45 - 16:05 : Sekvenssikaavioiden kertausta ja tekemistä.
 
-## To 1.10 - 4 tuntia 30 min
+## To 1.10. - 4 tuntia 30 min
 - 14:15 - 16:35 : Testikattavuutta muokatuilla metodeilla.
 - 18:00 - 20:10 : Huomiseksi luvattu myrskyä, pitää laittaa kuntoon ja laittaa nettiin siltä varalta, että täältä korvesta menee sähkö ja/tai netti.
+
+## La 3.10. - 3 tuntia 
+- 13:30 - 14:00 : Teenpä graafisen merkinnän ensimmäiselle valitulle palalle.
+- 14:10 - 14:55 : Teenpä sitten tuon resurssikeräysnäkymän kanssa kuntoon.
+- 15:30 - 15:50 : Kattelen, jos jotain keksis. Taisin löytää bugin, ja taisin onnistua korjaamaan sen. 
+- 16:15 - 16:50 : Taidanpa tehdä tekstitiedostonlukijan.
+- 17:05 - 17:55 : Vaihdanpa pelaajien tiedot tekstitiedostoihin ja korjaan dialogisysteemiä.
+
+## Su 4.10. - 3 tuntia
+- 13:40 - 14:10 : Ohjelmoinpa kykyjä nappeihin.
+- 14:30 - 17:00 : Jatkuu sama homma.
+
+## Ma 5.10. - 
+- 14:45 - 16:20 : Teenpä voitto- ja häviötilat.
+- 16:50 - 17:00 : Yritti jatkaa, mutta väsy lopetti.
+
+## Ke 7.10. -
+- 11:25 - 12:40 : Oli tarkoitus tuokin tehdä valmiiksi ennen koodikatselmointia. Ehkä kerkeän vielä. Laitanpa nettiin nyt hauskemman version.

@@ -1,6 +1,5 @@
 package puzzlecourse.containers;
 
-import puzzlecourse.logic.GameRound;
 
 /**
  * Pelin pelaaja; ihminen tai ei.
@@ -13,15 +12,28 @@ public class Player {
     
     protected String[] dialogOptions;
     
+    private final int[] collectedPieces;
+    private final int[] victoryCondition;
+    
     private final boolean humanPlayer;
     
     protected Move currentMove;
+    
+    private boolean turnsAbilityAvailable;
+    
+    private final Ability[] abilities;
     
     public Player(boolean human, String name, String imageID) {
         humanPlayer = human;
         this.name = name;
         this.imageID = imageID;
         dialogOptions = new String[] {"..."};
+        turnsAbilityAvailable = true;
+        
+        collectedPieces = new int[6];
+        victoryCondition = new int[6];
+        
+        abilities = new Ability[2];
     }
     
     public String getName() {
@@ -33,12 +45,66 @@ public class Player {
     public boolean isHuman() {
         return humanPlayer;
     }
+    public int getCollected(int i) {
+        return collectedPieces[i];
+    }
+    public boolean getAbilityAvailability() {
+        return turnsAbilityAvailable;
+    }
+    public void setAbilityAvailable(boolean value) {
+        turnsAbilityAvailable = value;
+    }
     
-    public Dialog getDialogOption(int i) {
-        if (i < dialogOptions.length)
-            return new Dialog(this, dialogOptions[i], -1);
-        else
-            return new Dialog(this, dialogOptions[0], -1);
+    public void setAbility(int abilityNo, Ability ability) {
+        abilities[abilityNo % abilities.length] = ability;
+    }
+    
+    public void setVictoryConditionForType(int type, int required) {
+        victoryCondition[type] = required;
+    }
+    
+    public boolean isVictoryConditionMet() {
+        for (int i = 0; i < victoryCondition.length; i++) {
+            if (collectedPieces[i] < victoryCondition[i])
+                return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Palauttaa pelaajan käytettävän kyvyn tai sen puuttuessa
+     * nopeasti kyhätyn whatever-kyvyn.
+     * @param abilityNo kuinka mones pelaajan kyvyistä
+     * @return kyky
+     */
+    public Ability getAbility(int abilityNo) {
+        return abilities[abilityNo % abilities.length] != null ?
+               abilities[abilityNo % abilities.length] :
+               new Ability("Whatever",10,10,10,10,10,10,AbilityEffects.DESTROY, 0,0);
+    }
+    
+    public boolean hasResourcesForAbility(int abilityNo) {
+        for (int i = 0; i < collectedPieces.length; i++) {
+            if (collectedPieces[i] < getAbility(abilityNo).getRequirement(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public void payAbilitysRequirements(int abilityNo) {
+        for (int i = 0 ; i < collectedPieces.length; i++) {
+            collectedPieces[i] -= getAbility(abilityNo).getRequirement(i);
+        }
+    }
+    
+    /**
+     * Lisää kerättyihin palatyyppeihin uudet kerätyt.
+     * @param collected tyyppien määrätaulukko
+     */
+    public void addToCollected(int[] collected) {
+        for (int i = 0 ; i < collected.length; i++) {
+            collectedPieces[i] += collected[i];
+        }
     }
     
     /**
@@ -50,11 +116,11 @@ public class Player {
     public boolean makeMove(int y, int x) {
         if (currentMove == null || currentMove.getComplete()) {
             currentMove = new Move(y,x);
-            System.out.println("Vaihto: " + y + ", " + x);
+            //System.out.println("Vaihto: " + y + ", " + x);
             return false;
         } else if (currentMove.addCoord(y,x)) {
           currentMove = null;
-            System.out.println("Vaihto kumottu.");
+            //System.out.println("Vaihto kumottu.");
           return false;
         }
         return true;

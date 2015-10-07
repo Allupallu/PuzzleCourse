@@ -1,0 +1,5 @@
+Human: yes
+Name: Opiskelija
+ImageID: player
+Ability1: Sure kohtaloasi; (20,00,00,00,00,00)REPLACE03
+Ability2: Opiskele; (00,15,00,00,15,15)22

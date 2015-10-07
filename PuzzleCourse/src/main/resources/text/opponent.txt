@@ -1,0 +1,3 @@
+Human: no
+Name: Professori Sukka
+ImageID: opponent

@@ -33,6 +33,11 @@ public class Dialog {
         return dialogPlayer;
     }
     
+    /**
+     * Palauttaa seuraavan tulostettavan tekstin, eli edellinen plus
+     * kirjain paitsi jos jo valmis.
+     * @return tulostettava teksti stringinä
+     */
     public String getText() {
         if (lastsForXFrames > 0) lastsForXFrames--;
         

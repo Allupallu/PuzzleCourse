@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import puzzlecourse.containers.Dialog;
+import puzzlecourse.containers.Player;
 import puzzlecourse.logic.ImageLoader;
 
 /**
@@ -21,6 +22,13 @@ import puzzlecourse.logic.ImageLoader;
  * @author aleksi
  */
 public class DialogLayer {
+    
+    
+    private static final int dialogBoxWidth = ScalabilityLogic.getWindowWidth() / 10 * 6;
+    private static final int dialogBoxHeight = ScalabilityLogic.getWindowHeight() / 8 * 2;
+    private static final int dialogBoxX = dialogBoxWidth / 6 * 2;
+    private static final int dialogBoxY = (int) (dialogBoxHeight * 2.5);
+        
     
     private static StackPane layerBase;
     
@@ -37,6 +45,7 @@ public class DialogLayer {
     
     
     private static void setup() {
+        
         makeLayerBase();
         setupMouseAction();
         makeGameLock();        
@@ -47,12 +56,12 @@ public class DialogLayer {
         dialogQueue = new LinkedList<>();
         
         isSetUp = true;
-        hide();
     }
     private static void makeLayerBase() {
         layerBase = new StackPane();
         layerBase.setPrefSize(ScalabilityLogic.getWindowWidth(),
-                              ScalabilityLogic.getWindowHeight());
+                              ScalabilityLogic.getWindowHeight()); 
+        hide();
     }
     private static void makeGameLock() {
         gameLock = new Rectangle(ScalabilityLogic.getWindowWidth(),
@@ -65,36 +74,27 @@ public class DialogLayer {
         dialogGroup = new Group();
         dialogGroup.setManaged(false);
         
-        int dialogBoxWidth = ScalabilityLogic.getWindowWidth() / 10 * 6;
-        int dialogBoxHeight = ScalabilityLogic.getWindowHeight() / 8 * 2;
-        int dialogBoxX = dialogBoxWidth / 6 * 2;
-        int dialogBoxY = (int) (dialogBoxHeight * 2.5);
-        
-        makeDialogPortrait(dialogBoxWidth,dialogBoxHeight,dialogBoxX,dialogBoxY);
-        makeDialogBG(dialogBoxWidth,dialogBoxHeight,dialogBoxX,dialogBoxY);
-        makeDialogText(dialogBoxWidth,dialogBoxHeight,dialogBoxX,dialogBoxY);
+        makeDialogPortrait();
+        makeDialogBG();
+        makeDialogText();
         dialogGroup.getChildren().addAll(dialogTextBackGround,
                                          dialogText,
                                          dialogPortrait);
     }
-    private static void makeDialogPortrait(int dialogBoxWidth, int dialogBoxHeight,
-                                           int dialogBoxX, int dialogBoxY) {
+    private static void makeDialogPortrait() {
         dialogPortrait = new ImageView();
         dialogPortrait.setPreserveRatio(true);
-        dialogPortrait.setLayoutX(dialogBoxX+dialogBoxWidth-300);
         dialogPortrait.setLayoutY(dialogBoxY-300);
     }
     
-    private static void makeDialogBG(int dialogBoxWidth, int dialogBoxHeight,
-                                     int dialogBoxX, int dialogBoxY) {
+    private static void makeDialogBG() {
         dialogTextBackGround = new Rectangle(dialogBoxWidth,
                                              dialogBoxHeight,
                                              Color.WHITE);
         dialogTextBackGround.setLayoutX(dialogBoxX);
         dialogTextBackGround.setLayoutY(dialogBoxY);   
     }
-    private static void makeDialogText(int dialogBoxWidth, int dialogBoxHeight,
-                                       int dialogBoxX, int dialogBoxY) {
+    private static void makeDialogText() {
         dialogText = new Text();
         int fontSize = Math.min(dialogBoxHeight/4 , 30);
         dialogText.setFont(new Font(fontSize));
@@ -109,10 +109,10 @@ public class DialogLayer {
         layerBase.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-                System.out.println("It works.");
                 if (!dialogQueue.isEmpty() && dialogQueue.peek().dialogClickFinish()) {
                     dialogQueue.poll();
-                    hide();
+                    if (dialogQueue.isEmpty()) hide();
+                    else updatePortrait();
                 }
             }
         });
@@ -122,7 +122,11 @@ public class DialogLayer {
         layerBase.toBack();
         layerBase.setVisible(false);
     }
-    
+    private static void show() {
+        layerBase.toFront();
+        layerBase.setVisible(true);
+        updatePortrait();
+    }
     
     public static StackPane getDialogLayerBase() {
         if (!isSetUp) setup();
@@ -135,15 +139,17 @@ public class DialogLayer {
      */
     public static void addDialog(List<Dialog> dialogList) {
         if (!isSetUp) setup();
-        layerBase.toFront();
-        layerBase.setVisible(true);
         dialogQueue.addAll(dialogList);
-        updatePortrait();
     }
     
     private static void updatePortrait() {
+        Player player = dialogQueue.peek().getPlayer();
         dialogPortrait.setImage(ImageLoader.loadImage(
-                                dialogQueue.peek().getPlayer().getImageID()));
+                                player.getImageID()));
+        int xOffset;
+        if (player.isHuman()) xOffset = dialogBoxWidth;
+        else xOffset = 300;
+        dialogPortrait.setLayoutX(dialogBoxX+dialogBoxWidth-xOffset);
         
     }
     
@@ -153,6 +159,10 @@ public class DialogLayer {
      */
     public static boolean timedUpdate() {
         if (dialogQueue.isEmpty()) return false;
+        
+        if (!layerBase.isVisible()) {
+            show();
+        }
         
         dialogText.setText( dialogQueue.peek().getText() );
         

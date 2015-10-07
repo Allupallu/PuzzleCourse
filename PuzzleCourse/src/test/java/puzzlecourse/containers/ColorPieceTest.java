@@ -35,7 +35,7 @@ public class ColorPieceTest {
     @Test
     public void randomizedNew() {
         ColorPiece c = new ColorPiece();
-        assertEquals(false, c.getType() == 0);
+        assertEquals(false, c.getType() == -1);
     }
     
 }

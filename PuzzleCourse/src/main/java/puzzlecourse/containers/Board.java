@@ -232,7 +232,22 @@ public class Board {
         return false;
     }
     
-    
+    /**
+     * Palauttaa listan tietyntyyppisten palasten koordinaateista.
+     * @param type haettava tyyppi
+     * @return lista tyypin paloista
+     */
+    public List<Coordinate> getTypeCoordinates(int type) {
+        List<Coordinate> list = new LinkedList<>();
+        for (int i = 0 ; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                if (getPiece(i,j).getType() == type) {
+                    list.add(new Coordinate(i,j));
+                }
+            }
+        }
+        return list;
+    }
     
     
     

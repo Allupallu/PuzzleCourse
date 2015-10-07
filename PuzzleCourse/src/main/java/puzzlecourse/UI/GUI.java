@@ -18,19 +18,54 @@ import puzzlecourse.logic.GameRound;
  */
 public class GUI extends Application {
 
+    private static StackPane root = new StackPane();
+    private static int activeStage;
+    
+    
+    /**
+     * Ikkunan tilan muokkaamiseen.
+     * Pelitila on 1.
+     * Voittotila on 2.
+     * Häviötila on 3.
+     * @param stage mihin tilaan siirrytään.
+     */
+    public static void setRoot(int stage) {
+        if (activeStage == stage) {
+            return;
+        } else {
+           if (activeStage != 1) {
+               root.getChildren().clear();
+           }
+        }
+        switch(stage) {
+            case 1: root = getRoot();
+                    activeStage = 1;
+                    break;
+            case 2: root.getChildren().add(ResultPopup.getResultScreen(true));
+                    activeStage = 2;
+                    break;
+            case 3: root.getChildren().add(ResultPopup.getResultScreen(false));
+                    activeStage = 3;
+                    break;
+                    
+            
+            
+        }
+    }
     
     
     @Override
     public void start(Stage primaryStage) {
 
-        StackPane root = getRoot();
+        setRoot(1);
+        //root = getRoot();
         
         Scene scene = new Scene(root, 
                                 ScalabilityLogic.getWindowWidth(),
                                 ScalabilityLogic.getWindowHeight());
         
         setupTimeLine();
-
+        
         primaryStage.setTitle("Puzzle Course");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -38,8 +73,7 @@ public class GUI extends Application {
     }
     
     private static StackPane getRoot() {
-        StackPane root = new StackPane();
-
+        
         GameRound round = setupRound();
         BorderPane gameView = getGameView(round);
         
@@ -98,7 +132,10 @@ public class GUI extends Application {
         return lock;
     }
     
-
+    /**
+     * Graafisen kaikille JavaDoc :D
+     * @param args 
+     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import puzzlecourse.UI.BoardDrawCoordinates;
 import puzzlecourse.UI.DialogLayer;
+import puzzlecourse.UI.G_Updater;
+import puzzlecourse.containers.Ability;
 import puzzlecourse.containers.Board;
 import puzzlecourse.containers.Coordinate;
-import puzzlecourse.containers.Dialog;
 import puzzlecourse.containers.Move;
-import puzzlecourse.containers.Opponent;
 import puzzlecourse.containers.Player;
 
 /**
@@ -25,8 +25,23 @@ public class GameRound {
     public GameRound() {
         board = new Board();
         players = new LinkedList<>();
-        players.add(new Player(true, "The Student", "player"));
-        players.add(new Opponent(false, "The Opponent", "opponent", board));
+        players.add(TextFileLoader.getPlayerFromFile(board, "player"));
+        players.add(TextFileLoader.getPlayerFromFile(board, "opponent"));
+        setEndConditions();
+    }
+    
+    private void setEndConditions() {
+        players.get(0).setVictoryConditionForType(2, 50);
+        players.get(1).setVictoryConditionForType(0, 50);
+    }
+    
+    private void checkEndConditions() {
+        for (Player p : players) {
+            if (p.isVictoryConditionMet()) {
+                DialogLayer.addDialog(TextFileLoader.getDialogFromFile(this, p == getPlayer(0) ? "victory" : "defeat"));
+                G_Updater.endRound(p == getPlayer(0));
+            }
+        }
     }
     
     /**
@@ -39,18 +54,16 @@ public class GameRound {
     }
     private void newBoardDialog() {
         if (opponentIntroduced) {   
-            List<Dialog> newBoardDialog = new LinkedList<>();
-            newBoardDialog.add(getPlayer(1).getDialogOption(0));
-            DialogLayer.addDialog(newBoardDialog);
+            DialogLayer.addDialog(TextFileLoader.getDialogFromFile(this, "newBoard"));
         }
-    }
+     }
     
     /**
-     * Esittelee vastustajan.
+     * Esittelee vastustajan dialogilla.
      */
     public void introduceOpponent() {
+        DialogLayer.addDialog(TextFileLoader.getDialogFromFile(this, "introduction"));
         opponentIntroduced = true;
-        newBoardDialog();
     }
     
     public int getBoardSize() {
@@ -89,7 +102,7 @@ public class GameRound {
         if (move) {
             if (switchPieces(players.get(currentPlayer).getCurrentMove())) {
                 nextPlayer();
-                System.out.println("Hyvä vaihto.");
+                //System.out.println("Hyvä vaihto.");
             } else {
                 if (players.get(currentPlayer).isHuman()) {
                    players.get(currentPlayer).getCurrentMove().reverseBadCoord();
@@ -100,11 +113,60 @@ public class GameRound {
         return move;
     }
     
+    /**
+     * Tällä käytetään pelaajan napeista aktivoitavia kykyjä.
+     * @param abilitySlot monesko kyky
+     * @return onnistuiko kyvyn käyttö
+     */
+    public boolean useAbility(int abilitySlot) {
+        Player player = getPlayer(currentPlayer);
+        if (player.getAbilityAvailability() &&
+            player.hasResourcesForAbility(abilitySlot)) {
+            
+            
+            Ability usedAbility = player.getAbility(abilitySlot);
+        
+            List<Coordinate> affectedCoordinates = board.getTypeCoordinates(usedAbility.targetType());
+        
+            // Itse käyttöosa
+            switch(usedAbility.getEffect()) {
+                case REPLACE: replaceTypes(affectedCoordinates, usedAbility.changesToType());
+                              break;
+                case DESTROY: destroyLoop(affectedCoordinates);
+                              break;
+            }
+            
+            player.setAbilityAvailable(false);
+            player.payAbilitysRequirements(abilitySlot);
+            checkEndConditions();
+            return true;
+        }
+        return false;
+    }
     
+    private void replaceTypes(List<Coordinate> list, int toType) {
+        for (Coordinate c : list) {
+            board.getPiece(c.getY(), c.getX()).changeType(toType);
+        }
+        G_Updater.assignImagesToReplaced(list, toType);
+        List<Coordinate> threes = findThreesFromReplacedCoordinates(list);
+        if (!threes.isEmpty())
+            destroyLoop(threes);
+        
+    }
+    private List<Coordinate> findThreesFromReplacedCoordinates(List<Coordinate> list) {
+        List<Coordinate> threes = new LinkedList<>();
+        for (Coordinate c : list) {
+            threes.addAll(threesAt(c.getY(), c.getX()));
+        }
+        return threes;
+    }
     
     private void nextPlayer() {
+        checkEndConditions();
+        getPlayer(currentPlayer).setAbilityAvailable(false);
         currentPlayer = (currentPlayer+1) % players.size();
-        System.out.println("Current player: "+currentPlayer);
+        getPlayer(currentPlayer).setAbilityAvailable(true);
         
     }
     
@@ -131,10 +193,7 @@ public class GameRound {
             return false;
         }
         BoardDrawCoordinates.addSwitchWaypoint(y1, x1, getTypeAt(y1,x1), y2, x2, getTypeAt(y2,x2)); // <- Animaatiolle
-        while (!list.isEmpty()) {
-            list = destroy(list);
-        }
-        checkBoardAfterSwitch();
+        destroyLoop(list);
         return true;
     }
 
@@ -161,8 +220,19 @@ public class GameRound {
         list.addAll(board.findThreePiecesAt(y, x));
         return list;
     }
+    private void destroyLoop(List<Coordinate> list) {
+        while (!list.isEmpty()) {
+            list = destroy(list);
+        }
+        checkBoardAfterSwitch();
+    }
+    
     private List<Coordinate> destroy(List<Coordinate> list) {
-        
+        int[] pieceTypeTable = new int[6];
+        for (Coordinate c : list) {
+            pieceTypeTable[getTypeAt(c.getY(),c.getX())]++;
+        }
+        getPlayer(currentPlayer).addToCollected(pieceTypeTable);
         return board.destroyAt(list);
         
     }

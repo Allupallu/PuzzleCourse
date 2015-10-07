@@ -5,7 +5,10 @@
  */
 package puzzlecourse.UI;
 
-import javafx.geometry.Pos;
+import java.util.LinkedList;
+import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -26,6 +29,8 @@ import puzzlecourse.logic.ImageLoader;
  */
 public class PlayerPanel extends VBox {
     
+    private static final List<PlayerPanel> panels = new LinkedList<>();
+    
     private final Player player;
     private final BorderPane portraitPane;
     private ImageView portrait;
@@ -33,10 +38,13 @@ public class PlayerPanel extends VBox {
     
     private final int[] collectedPieces;
     private Text[] collectedText;
+    private boolean updateRequired;
     
     // Hajoaa useaksi metodiksi, kunhan olen vähemmän väsynyt.
     public PlayerPanel(Player player) {
+        panels.add(this);
         this.player = player;
+        
         collectedPieces = new int[6];
         makeCollectedText();
         portraitPane = makePortraitPane();
@@ -44,32 +52,53 @@ public class PlayerPanel extends VBox {
         Text playerName = new Text(0, 0, player.getName());
         playerName.setFont(new Font(20));
         
-        if (player.isHuman()) {
-            Button playerSkill1 = new Button();
-            Text skill1Reqs = new Text(0,0,"Requires: ----");
-            playerSkill1.setText("Weep loudly");
-            playerSkill1.setMinWidth(ScalabilityLogic.getSidePanelSize()/2);
-            
-            
-            Text skill2Reqs = new Text(0,0,"Requires: ----");
-            Button playerSkill2 = new Button();
-            playerSkill2.setText("Do squats.");
-            playerSkill2.setMinWidth(ScalabilityLogic.getSidePanelSize()/2);
-            
-            getChildren().addAll(portraitPane, playerName,
-                                 skill1Reqs, playerSkill1,
-                                 skill2Reqs, playerSkill2);
-        } else {
-            this.setAlignment(Pos.TOP_RIGHT);
-            getChildren().addAll(portraitPane, playerName);
-        }
+        
+        getChildren().addAll(portraitPane, playerName);
+        
         getChildren().addAll(makeResources());
+        
+        makeAbilityButton(0);
+        makeAbilityButton(1);
+        
     }
+    private void makeAbilityButton(int i) {
+        if (player.isHuman()) {
+            Button playerSkill = new Button();
+            HBox skillReqs = makeRequirementsVisual(i);
+            playerSkill.setText(player.getAbility(i).getAbilityName());
+            playerSkill.setMinWidth(ScalabilityLogic.getSidePanelSize()/4*3);
+            assignActionToAbilityButton(playerSkill, i);
+            getChildren().addAll(playerSkill, skillReqs);
+        }
+    }
+    private void assignActionToAbilityButton(Button b, final int i) {
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                G_Updater.useAbility(i);
+            }
+        });
+    }
+    
+    private HBox makeRequirementsVisual(int i) {
+        HBox requirements = new HBox();
+        for (int j = 0 ; j < 6; j++) {
+            ImageView resourceIcon = new ImageView(ImageLoader.getImage(j));
+            resourceIcon.setPreserveRatio(true);
+            resourceIcon.setFitWidth(ScalabilityLogic.getColorPieceImageSize()/6);
+            Text reqText = new Text(0, 0, ""+player.getAbility(i).getRequirement(j));
+            requirements.getChildren().addAll(resourceIcon, reqText);
+        }
+        return requirements;
+    }
+
     
     private BorderPane makePortraitPane() {
         int portraitSize = ScalabilityLogic.getSidePanelSize();
         int pictureSize = portraitSize-20;
-        activeTurnIndicator = new Circle(pictureSize/2, Color.YELLOW);
+        
+        makeActiveTurnIndicator(pictureSize);
+        
         makePortraitImageView(pictureSize);
         
         StackPane framed = new StackPane();
@@ -79,6 +108,10 @@ public class PlayerPanel extends VBox {
         ret.setCenter(framed);
         
         return ret;
+    }
+    private void makeActiveTurnIndicator(int pictureSize) {
+        activeTurnIndicator = new Circle(pictureSize/2, Color.YELLOW);
+        activeTurnIndicator.setVisible(player.isHuman());
     }
     private void makePortraitImageView(int size) {
         portrait = new ImageView();
@@ -90,6 +123,7 @@ public class PlayerPanel extends VBox {
         collectedText = new Text[collectedPieces.length];
         for (int i = 0 ; i < collectedPieces.length; i++) {
             collectedText[i] = new Text(0,0, ""+collectedPieces[i]);
+            collectedText[i].setFont(new Font(ScalabilityLogic.getColorPieceImageSize()/4));
         }
     }
     
@@ -105,26 +139,44 @@ public class PlayerPanel extends VBox {
         HBox resourceBox = new HBox();
         ImageView resourceIcon = new ImageView(ImageLoader.getImage(type));
         resourceIcon.setPreserveRatio(true);
-        resourceIcon.setFitWidth(14);
+        resourceIcon.setFitWidth(ScalabilityLogic.getColorPieceImageSize()/3);
         resourceBox.getChildren().addAll(resourceIcon, collectedText[type]);
         return resourceBox;
     }
     
     
+    private boolean updateResourceType(int type) {
+        if (collectedPieces[type] < player.getCollected(type)) {
+            collectedPieces[type]++;
+            return true;
+        } else if (collectedPieces[type] > player.getCollected(type)) {
+            collectedPieces[type]--;
+            return true; }
+        else {
+            return false;
+        }
+    }
+    private void updateResourceText(int type) {
+        collectedText[type].setText(""+collectedPieces[type]);
+    }
+    
+    private void updatePanel() {
+        updateRequired = true;
+        for (int i = 0 ; i < collectedPieces.length; i++) {
+            if (updateResourceType(i)) {
+                updateResourceText(i);
+                updateRequired = false;
+            }
+        }
+    }
+    
     /**
-     * Tää ei oo vielä toimiva systeemi hei yritä ees jou
-     * @param currentPlayer 
+     * Päivittää paneelin graafiset.
      */
-    public void currentPlayerIndicatorUpdater(Player currentPlayer) {
-        activeTurnIndicator.setVisible(this.player == player);  
-    }
-    
-    public void addXPiecesOfTypeY(int x, int y) {
-        collectedPieces[y] += x;
-    }
-    
-    public void updatePanel() {
-        
+    public static void updatePanels() {
+        for (PlayerPanel p : panels) {
+            p.updatePanel();
+        }
     }
     
 }

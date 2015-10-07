@@ -1,0 +1,2 @@
+0: Taisin saada kurssini läpi.
+1: Niinhän siinä nyt kävi.
