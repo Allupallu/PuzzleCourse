@@ -63,6 +63,12 @@ public class TextFileLoader {
         return  new Dialog(whoseLine, comesOut, -1);
     }
     
+    /**
+     * Rakentaa pelaajan sopivasta tekstitiedostosta.
+     * @param board lauta mahdollisen tekoälyn käytettäväksi
+     * @param filename pelaajatiedoston nimi sans .txt
+     * @return Player-olio tiedostosta
+     */
     public static Player getPlayerFromFile(Board board, String filename) {
         if (!setScannerForFile(filename)) return new Player(true, "Error", "error");
         

@@ -85,5 +85,9 @@
 - 14:45 - 16:20 : Teenpä voitto- ja häviötilat.
 - 16:50 - 17:00 : Yritti jatkaa, mutta väsy lopetti.
 
-## Ke 7.10. -
+## Ke 7.10. - 
 - 11:25 - 12:40 : Oli tarkoitus tuokin tehdä valmiiksi ennen koodikatselmointia. Ehkä kerkeän vielä. Laitanpa nettiin nyt hauskemman version.
+- 14:30 - 18:05 : Koodikatselmointi.
+
+## Pe 9.10. - 3 tuntia
+- 13:15 - 16:15 : Näin outoa unta ja heräsin päänsäryn kanssa. Aika kuvata magnum opus elokuvani: "Väsynyt ja päänsärkyinen ohjelmoija 2: Sekvenssikaavioita ja testikattavuutta deadlinelle". Ehdottoman tärkeä yksityiskohta: Donkey Kong Country: Tropical Freeze Soundtrackin kuunteleminen on ainoa asia, jolla jaksan. Suosittelen sinullekin, oi henkilö, joka lukee pitkiä (selvästi itse työskentelyä vältteleviä) tuntikirjanpitomerkintöjä.

@@ -1,6 +1,7 @@
 package puzzlecourse.logic;
 
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +12,11 @@ import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
 import puzzlecourse.UI.BoardDrawCoordinates;
+import puzzlecourse.containers.Ability;
+import puzzlecourse.containers.Coordinate;
+import puzzlecourse.containers.Dialog;
 import puzzlecourse.containers.Move;
+import puzzlecourse.containers.Player;
 
 /**
  *
@@ -22,7 +27,7 @@ public class GameRoundTest {
     private GameRound round;
     private int size;
     @Rule
-    public Timeout globalTimeout= new Timeout(4000);
+    public Timeout globalTimeout= new Timeout(2000);
     
     public GameRoundTest() {
     }
@@ -88,10 +93,10 @@ public class GameRoundTest {
                          ||round.getTypeAt(0, 2) != 1);
     }
     @Test
-    public void typesAreNotJustOnes2() {
-        assertEquals(true, round.getTypeAt(1, 0) != 1
-                         ||round.getTypeAt(1, 1) != 1
-                         ||round.getTypeAt(1, 2) != 1);
+    public void typesAreNotJustZeroes2() {
+        assertEquals(true, round.getTypeAt(1, 0) != 0
+                         ||round.getTypeAt(1, 1) != 0
+                         ||round.getTypeAt(1, 2) != 0);
     }
     
     @Test
@@ -189,7 +194,7 @@ public class GameRoundTest {
         assertEquals(false, round.switchPieces(0, 0, size-1, size-1));
     }
     
-    @Test (timeout=3000) // Kestää pitkään, kun tekee paljon liikkeitä
+    @Test (timeout=1300) // Kestää pitkään, kun tekee paljon liikkeitä
     public void cannotExhaustMovesInOneSecond() {
         boolean moves = true;
         
@@ -206,5 +211,24 @@ public class GameRoundTest {
         }
         assertEquals(moves, true);
     }
+    
+    @Test
+    public void noAbilityUseWithoutResources() {
+        assertEquals(false, round.useAbility(0));
+    }
+    @Test
+    public void abilityAvailableWhenYouLoaded() {
+        round.getPlayer(0).addToCollected( new int[] {20, 20, 20,
+                                                      20, 20, 20});
+        assertEquals(true, round.useAbility(1));      
+    }
+    @Test
+    public void noAbilitySpamEvenWhenYouLoaded() {
+        round.getPlayer(0).addToCollected( new int[] {70, 0, 0,
+                                                      0, 0, 0});
+        round.useAbility(1);
+        assertEquals(false, round.useAbility(1));      
+    }
+    
     
 }
