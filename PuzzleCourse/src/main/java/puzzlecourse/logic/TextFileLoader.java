@@ -27,7 +27,7 @@ public class TextFileLoader {
      * vastustaja.
      * @param round erä, johon dialogi liittyy
      * @param filename dialogitiedoston nimi sans .txt
-     * @return 
+     * @return dialogi listana
      */
     public static List<Dialog> getDialogFromFile(GameRound round, String filename) {
         if (!setScannerForFile(filename)) return new LinkedList<>();
@@ -87,7 +87,7 @@ public class TextFileLoader {
         Player player;
         
         if (human) player = new Player(true, name, imageID);
-        else player = new Opponent(false, name, imageID, board);
+        else player = new Opponent(name, imageID, board);
         
         player.setAbility(0, getAbilityFromList(list, 0));
         player.setAbility(1, getAbilityFromList(list, 1));

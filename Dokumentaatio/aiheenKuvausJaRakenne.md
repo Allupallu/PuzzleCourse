@@ -15,6 +15,8 @@ Voitto- ja häviötilat määritellään tarkemmin myöhemmin, kunhan ne ensi vi
 - Uuden pelin aloittaminen
 - Vierekkäisten värikkäiden muotojen paikkojen vaihtaminen
   - Vain hyväksyttäville siirroille
+- Pelaajan kykyjen käyttö 
+  - Vain kykyjen ehtojen täyttyessä
 
 # Rakenne
 
@@ -30,7 +32,7 @@ Erä käyttää TextFileLoader-luokkaa apunaan luodakseen pelaajat kykyineen ja 
 
 ## Graafinen
 
-Pelin graafinen toteutus on tehty JavaFX-grafiikkapaketeilla.
+Pelin graafinen toteutus on tehty openjdk8 JavaFX-grafiikkapaketeilla. Esim. NetBeansissa pareisi siis Java Dependecy-asetuksen olla JDK 1.8 ihmeellisyyksien välttämiseksi.
 
 Graafinen käyttöliittymä koostuu useista näkymistä: pelinäkymä, dialoginäkymä ja tulosnäkymä. Näkymät ovat pinottu päällekkäin, ja niiden päällimmäisyyttä ja näkyvyyttä muokataan tarpeenmukaisesti. Tulosnäkymä lisätään pinoon vasta tarvittaessa.
 

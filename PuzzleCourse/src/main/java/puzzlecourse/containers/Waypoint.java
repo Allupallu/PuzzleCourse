@@ -4,7 +4,8 @@ import java.util.Objects;
 import puzzlecourse.UI.BoardDrawCoordinates;
 
 /**
- * Kuvaa tiettyyn koordinaattiin liikkumisen vaihetta.
+ * Kuvaa tiettyyn koordinaattiin liikkumisen vaihetta värillisen
+ * nappulan animaatiossa.
  * Nopeus ei riipu x/y-akselista, joten kulmat, joille liikkeen
  * aste % 45 != 0, liikkuvat hassusti.
  * @author aleksi
@@ -21,6 +22,16 @@ public class Waypoint {
     private final int goalY, goalX;
     private int currentY, currentX;
     
+    /**
+     * Luo annetuissa koordinaateissa sijaitsevalle nappulalle
+     * liikeanimaation annettuihin koordinaatteihin. Tallentaa
+     * myös animoitavan nappulan tyypin.
+     * @param y liikutettavan nappulan referenssi y-koordinaatti laudalla
+     * @param x liikutettavan nappulan referenssi x-koordinaatti laudalla
+     * @param goalY liikkeen kohteen y-lautakoordinaatti
+     * @param goalX liikkeen kohteen x-lautakoordinaatti
+     * @param type nappulan tyyppi animaation aikana
+     */
     public Waypoint(int y, int x, int goalY, int goalX, int type) {
         boardReference = new Coordinate(y,x);
         currentY = BoardDrawCoordinates.fromBoardReferenceToDrawInt(y);

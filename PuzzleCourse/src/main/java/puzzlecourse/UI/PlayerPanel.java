@@ -40,27 +40,30 @@ public class PlayerPanel extends VBox {
     private Text[] collectedText;
     private boolean updateRequired;
     
-    // Hajoaa useaksi metodiksi, kunhan olen vähemmän väsynyt.
+    /**
+     * Luo pelaajalle paneelin.
+     * @param player pelaaja, jolle paneeli luodaan
+     */
     public PlayerPanel(Player player) {
         panels.add(this);
         this.player = player;
-        
         collectedPieces = new int[6];
-        makeCollectedText();
         portraitPane = makePortraitPane();
         
-        Text playerName = new Text(0, 0, player.getName());
-        playerName.setFont(new Font(20));
-        
-        
-        getChildren().addAll(portraitPane, playerName);
-        
-        getChildren().addAll(makeResources());
-        
+        makePlayerInfo();
         makeAbilityButton(0);
         makeAbilityButton(1);
         
     }
+    private void makePlayerInfo() {
+        makeCollectedText();
+        Text playerName = new Text(0, 0, player.getName());
+        playerName.setFont(new Font(20));
+        getChildren().addAll(portraitPane, playerName);
+        
+        getChildren().addAll(makeResources());
+    }
+    
     private void makeAbilityButton(int i) {
         if (player.isHuman()) {
             Button playerSkill = new Button();

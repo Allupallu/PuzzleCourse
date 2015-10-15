@@ -14,6 +14,19 @@ public class Ability {
     private final int onType;
     private final int toType;
     
+    /**
+     * Luo kyvyn resurssivaatimuksineen ja efekteineen.
+     * @param abilityName Kyvyn nimi.
+     * @param type0req ColorPiece typeltä 0 vaatimus.
+     * @param type1req ColorPiece typeltä 1 vaatimus.
+     * @param type2req ColorPiece typeltä 2 vaatimus.
+     * @param type3req ColorPiece typeltä 3 vaatimus.
+     * @param type4req ColorPiece typeltä 4 vaatimus.
+     * @param type5req ColorPiece typeltä 5 vaatimus.
+     * @param effect mitä kyky tekee
+     * @param onType mille kyky tekee
+     * @param toType miksi kyky tekee, jos moinen kyky
+     */
     public Ability(String abilityName,
                    int type0req,
                    int type1req,
@@ -45,10 +58,10 @@ public class Ability {
     public AbilityEffects getEffect() {
         return effect;
     }
-    public int targetType() {
+    public int getOnType() {
         return onType;
     }
-    public int changesToType() {
+    public int getToType() {
         return toType;
     }
     

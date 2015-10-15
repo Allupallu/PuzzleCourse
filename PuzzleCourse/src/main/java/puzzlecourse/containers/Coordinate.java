@@ -9,6 +9,11 @@ public class Coordinate {
     
     private int x, y;
     
+    /**
+     * Luo koordinaatin.
+     * @param y y-koordinaatti
+     * @param x x-koordinaatti
+     */
     public Coordinate( int y , int x ) {
         this.y = y;
         this.x = x;

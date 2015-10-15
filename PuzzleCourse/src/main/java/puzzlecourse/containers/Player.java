@@ -23,6 +23,12 @@ public class Player {
     
     private final Ability[] abilities;
     
+    /**
+     * Luo pelaajan erälle.
+     * @param human onko pelaaja käyttäjän ohjattavissa
+     * @param name pelaajan nimi
+     * @param imageID pelaajan kuvan tiedostonimi sans .png
+     */
     public Player(boolean human, String name, String imageID) {
         humanPlayer = human;
         this.name = name;

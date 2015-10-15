@@ -12,10 +12,15 @@ public class Opponent extends Player {
     private final int THINKING_TIME = 30;
     
     private int timeThought;
-    private boolean introduced;
     
-    public Opponent(boolean human, String name, String imageID, Board board) {
-        super(human, name, imageID);
+    /**
+     * Luo vastustaja-olion, eli pelaaja-olio tekoälyllä.
+     * @param name vastustajan nimi
+     * @param imageID vastustajan kuvan tiedostonimi sans .png
+     * @param board lauta, johon tekoäly kajoaa
+     */
+    public Opponent(String name, String imageID, Board board) {
+        super(false, name, imageID);
         this.board = board;
     }
     

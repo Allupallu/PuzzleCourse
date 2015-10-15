@@ -85,10 +85,10 @@ public class BoardDrawCoordinates {
      * Lisää animaatio-Waypointit vaihdettaville paikoille.
      * @param y1 lauta y1-koordinaatti
      * @param x1 lauta x1-koordinaatti
-     * @param type1
+     * @param type1 ensimmäisen palan tyyppi
      * @param y2 lauta y2-koordinaatti
      * @param x2 lauta x2-koordinaatti
-     * @param type2
+     * @param type2 toisen palan tyyppi
      */
     public static void addSwitchWaypoint(int y1, int x1, int type1, int y2, int x2, int type2) {
         Waypoint way1 = new Waypoint(y1,x1,y1,x1, type1);

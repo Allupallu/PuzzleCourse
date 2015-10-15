@@ -91,3 +91,10 @@
 
 ## Pe 9.10. - 3 tuntia
 - 13:15 - 16:15 : Näin outoa unta ja heräsin päänsäryn kanssa. Aika kuvata magnum opus elokuvani: "Väsynyt ja päänsärkyinen ohjelmoija 2: Sekvenssikaavioita ja testikattavuutta deadlinelle". Ehdottoman tärkeä yksityiskohta: Donkey Kong Country: Tropical Freeze Soundtrackin kuunteleminen on ainoa asia, jolla jaksan. Suosittelen sinullekin, oi henkilö, joka lukee pitkiä (selvästi itse työskentelyä vältteleviä) tuntikirjanpitomerkintöjä.
+
+## La 10.10. - 
+- 19:30 - 19:50 : Kokeilenpa tehä ja testata jar-tiedoston. Toimi läppärilläkin. Vallan hienoa.
+- 19:50 - 20:15 : JavaDoc kuntoon. En ainakaan huomannut puutteita.
+
+## To 15.10. - 1 tunti
+- 11:20 - 12:20 : Taidanpa tehdä loppuun jutut ja laittaa nettiin. Ekaksi konstruktori-JavaDocit. Tein myös joitain Clean Code -muokkauksia. En ainakaan nopeasti testatessa bongannut rikkoneeni mitään. Testattu usealla koneella, ja toimii ainakin noilla, joissa on Java 8. Eiköhän tuo riitä; kaikki nettiin! :p

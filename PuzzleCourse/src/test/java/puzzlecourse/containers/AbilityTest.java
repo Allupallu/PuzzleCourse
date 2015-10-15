@@ -46,11 +46,11 @@ public class AbilityTest {
     }
     @Test
     public void target() {
-        assertEquals(4, ability.targetType());
+        assertEquals(4, ability.getOnType());
     }
     @Test
     public void toType() {
-        assertEquals(5, ability.changesToType());
+        assertEquals(5, ability.getToType());
     }
     @Test
     public void getEffect() {

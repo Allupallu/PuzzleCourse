@@ -134,7 +134,7 @@ public class GUI extends Application {
     
     /**
      * Graafisen kaikille JavaDoc :D
-     * @param args 
+     * @param args vähä niinku ARPGs, mutta ilman playing ja oikeesti ihan muuta
      */
     public static void main(String[] args) {
         launch(args);

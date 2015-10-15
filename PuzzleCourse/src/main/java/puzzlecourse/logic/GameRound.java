@@ -22,6 +22,10 @@ public class GameRound {
     private int currentPlayer;
     private boolean opponentIntroduced;
     
+    /**
+     * Luo erän sekä sen pelilaudan ja pelaajat. 
+     * Asettaa myös ehdot erän loppumiselle.
+     */
     public GameRound() {
         board = new Board();
         players = new LinkedList<>();
@@ -95,7 +99,7 @@ public class GameRound {
      * liikettä.
      * @param y laudan y-koordinaatti
      * @param x laudan x-koordinaatti
-     * @return 
+     * @return yritettiinkö siirtoa
      */
     public boolean makeMove(int y, int x) {
         boolean move = players.get(currentPlayer).makeMove(y,x);
@@ -126,11 +130,11 @@ public class GameRound {
             
             Ability usedAbility = player.getAbility(abilitySlot);
         
-            List<Coordinate> affectedCoordinates = board.getTypeCoordinates(usedAbility.targetType());
+            List<Coordinate> affectedCoordinates = board.getTypeCoordinates(usedAbility.getOnType());
         
             // Itse käyttöosa
             switch(usedAbility.getEffect()) {
-                case REPLACE: replaceTypes(affectedCoordinates, usedAbility.changesToType());
+                case REPLACE: replaceTypes(affectedCoordinates, usedAbility.getToType());
                               break;
                 case DESTROY: destroyLoop(affectedCoordinates);
                               break;

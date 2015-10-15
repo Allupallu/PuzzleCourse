@@ -15,6 +15,11 @@ public class Move {
     private boolean complete;
     private int value;
     
+    /**
+     * Luo liikkeen, jonka ensimmäiset koordinaatit on annettu.
+     * @param y ensimmäinen y-koordinaatti
+     * @param x ensimmäinen x-koordinaatti
+     */
     public Move(int y, int x) {
         coords1 = new Coordinate(y,x);
     }

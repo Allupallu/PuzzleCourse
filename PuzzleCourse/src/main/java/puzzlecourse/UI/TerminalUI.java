@@ -9,6 +9,10 @@ import puzzlecourse.logic.GameRound;
  */
 public class TerminalUI {
     
+    /**
+     * Tulostaa pelilaudan tuonne tekstiulostuloon.
+     * @param round Erä, jonka laudan se tulostaa.
+     */
     public static void printBoard(GameRound round) {
         System.out.println("Lauta:");
         for (int i = 0; i < round.getBoardSize(); i++) {
@@ -21,7 +25,7 @@ public class TerminalUI {
     
     /**
      * Käynnistää tekstikäyttöliittymän laudalla. 
-     * @param round
+     * @param round lauta
      */
     public static void start(GameRound round) {
         

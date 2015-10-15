@@ -16,7 +16,9 @@ public class Board {
     
     private final ColorPiece[][] board;
     
-    
+    /**
+     * Luo pelilaudan.
+     */
     public Board() {
         board = new ColorPiece[SIZE][SIZE];
     }
@@ -124,7 +126,7 @@ public class Board {
     /**
      * Poistaa koordinaattien napit paikalta, pudottaa ylemmät ja luo 
      * huipulle uudet.
-     * @param coords
+     * @param coords lista koordinaateista
      * @return lista uusista tuhottavista
      */
     public List<Coordinate> destroyAt(List<Coordinate> coords) {
